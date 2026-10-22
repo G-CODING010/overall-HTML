@@ -336,7 +336,7 @@
                     </button>
                     <div class="h-4 w-[1px] bg-gray-700"></div>
                     <div class="flex items-center space-x-2">
-                        <span id="runner-app-icon" class="text-base">🚀</span>
+                        <span id="runner-app-icon" class="text-base flex items-center justify-center">🚀</span>
                         <h2 id="runner-app-title" class="font-bold text-sm text-white">Active Application</h2>
                     </div>
                 </div>
@@ -413,7 +413,7 @@
         </div>
     </div>
 
-    <!-- MODAL 4: CREATE / EDIT APP DETAILS -->
+    <!-- MODAL 4: CREATE / EDIT APP DETAILS (Updated with Emoji Presets & Image Upload) -->
     <div id="modal-app-details" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="glass-panel bg-darkcard w-full max-w-md rounded-2xl border border-gray-800 p-6 space-y-4 shadow-2xl">
             <div class="flex items-center justify-between">
@@ -432,21 +432,48 @@
                     <input type="text" id="form-app-title" required placeholder="e.g., My Interactive App" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-indigo-500">
                 </div>
 
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-gray-400 font-medium mb-1">App Icon (Emoji)</label>
-                        <input type="text" id="form-app-icon" placeholder="⚡" value="⚡" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-white text-center focus:outline-none focus:border-indigo-500">
+                <div>
+                    <label class="block text-gray-400 font-medium mb-1">App Icon (เลือก Emoji หรืออัปโหลดรูปภาพ)</label>
+                    <div class="flex items-center gap-3 mb-2">
+                        <!-- ช่องโชว์ไอคอนปัจจุบัน -->
+                        <div id="icon-preview-box" class="w-12 h-12 rounded-xl bg-gray-900 border border-gray-700 flex items-center justify-center text-2xl overflow-hidden shrink-0">
+                            ⚡
+                        </div>
+                        <div class="flex-1 space-y-1">
+                            <input type="text" id="form-app-icon" placeholder="⚡" value="⚡" oninput="updateIconPreview(this.value)" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-1.5 text-white text-center focus:outline-none focus:border-indigo-500">
+                        </div>
+                        <div>
+                            <label class="px-3 py-1.5 rounded-xl bg-indigo-600/30 hover:bg-indigo-600 text-indigo-300 hover:text-white border border-indigo-500/40 cursor-pointer font-medium transition inline-flex items-center gap-1.5">
+                                <i class="fa-solid fa-upload"></i> อัปโหลดรูป
+                                <input type="file" accept="image/*" onchange="handleAppIconImageUpload(event)" class="hidden">
+                            </label>
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-gray-400 font-medium mb-1">Category Tag</label>
-                        <select id="form-app-tag" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-indigo-500">
-                            <option value="utility">🛠️ Utility</option>
-                            <option value="audio">🎵 Audio / Music</option>
-                            <option value="creative">🎨 Creative & Art</option>
-                            <option value="productivity">⚡ Productivity</option>
-                            <option value="game">🎮 Game</option>
-                        </select>
+                    <!-- ปุ่มเลือก Emoji สำเร็จรูปยอดฮิต -->
+                    <div class="flex flex-wrap gap-1 bg-gray-900/60 p-2 rounded-xl border border-gray-800">
+                        <span class="text-[10px] text-gray-500 w-full mb-1">ไอคอนพื้นฐานยอดนิยม (คลิกเพื่อเลือก):</span>
+                        <button type="button" onclick="selectPresetIcon('⚡')" class="w-7 h-7 rounded-lg hover:bg-gray-800 flex items-center justify-center text-sm">⚡</button>
+                        <button type="button" onclick="selectPresetIcon('🛠️')" class="w-7 h-7 rounded-lg hover:bg-gray-800 flex items-center justify-center text-sm">🛠️</button>
+                        <button type="button" onclick="selectPresetIcon('🚀')" class="w-7 h-7 rounded-lg hover:bg-gray-800 flex items-center justify-center text-sm">🚀</button>
+                        <button type="button" onclick="selectPresetIcon('🎵')" class="w-7 h-7 rounded-lg hover:bg-gray-800 flex items-center justify-center text-sm">🎵</button>
+                        <button type="button" onclick="selectPresetIcon('🎨')" class="w-7 h-7 rounded-lg hover:bg-gray-800 flex items-center justify-center text-sm">🎨</button>
+                        <button type="button" onclick="selectPresetIcon('🎮')" class="w-7 h-7 rounded-lg hover:bg-gray-800 flex items-center justify-center text-sm">🎮</button>
+                        <button type="button" onclick="selectPresetIcon('📊')" class="w-7 h-7 rounded-lg hover:bg-gray-800 flex items-center justify-center text-sm">📊</button>
+                        <button type="button" onclick="selectPresetIcon('💡')" class="w-7 h-7 rounded-lg hover:bg-gray-800 flex items-center justify-center text-sm">💡</button>
+                        <button type="button" onclick="selectPresetIcon('🔥')" class="w-7 h-7 rounded-lg hover:bg-gray-800 flex items-center justify-center text-sm">🔥</button>
+                        <button type="button" onclick="selectPresetIcon('⭐')" class="w-7 h-7 rounded-lg hover:bg-gray-800 flex items-center justify-center text-sm">⭐</button>
                     </div>
+                </div>
+
+                <div>
+                    <label class="block text-gray-400 font-medium mb-1">Category Tag</label>
+                    <select id="form-app-tag" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-indigo-500">
+                        <option value="utility">🛠️ Utility</option>
+                        <option value="audio">🎵 Audio / Music</option>
+                        <option value="creative">🎨 Creative & Art</option>
+                        <option value="productivity">⚡ Productivity</option>
+                        <option value="game">🎮 Game</option>
+                    </select>
                 </div>
 
                 <div>
@@ -710,7 +737,6 @@
             showToast("Application deleted successfully!");
         }
 
-        // เพิ่มปุ่มแก้ไขชื่อและรายละเอียด (Edit Details Button) บนการ์ดโปรเจกต์
         function renderAppHub() {
             const grid = document.getElementById('app-grid');
             grid.innerHTML = '';
@@ -742,11 +768,20 @@
             filtered.forEach(p => {
                 const card = document.createElement('div');
                 card.className = "glass-card rounded-2xl p-5 flex flex-col justify-between group relative overflow-hidden";
+                
+                // ตรวจสอบว่าไอคอนเป็นรูปภาพ (Base64) หรือ Emoji ปกติ
+                let iconHtml = '';
+                if (p.icon && p.icon.startsWith('data:image')) {
+                    iconHtml = `<img src="${p.icon}" class="w-full h-full object-cover rounded-xl">`;
+                } else {
+                    iconHtml = `<span>${p.icon || '🚀'}</span>`;
+                }
+
                 card.innerHTML = `
                     <div>
                         <div class="flex items-start justify-between mb-3">
-                            <div class="w-12 h-12 rounded-2xl bg-gray-900 border border-gray-800 flex items-center justify-center text-2xl shadow-inner">
-                                ${p.icon || '🚀'}
+                            <div class="w-12 h-12 rounded-2xl bg-gray-900 border border-gray-800 flex items-center justify-center text-2xl shadow-inner overflow-hidden">
+                                ${iconHtml}
                             </div>
                             <div class="flex items-center gap-1.5">
                                 <button onclick="toggleFavorite('${p.id}')" title="Toggle Favorite" class="p-1 text-xs ${p.favorite ? 'text-amber-400' : 'text-gray-600 hover:text-gray-300'} transition">
@@ -809,7 +844,7 @@
             projects.forEach(p => {
                 const opt = document.createElement('option');
                 opt.value = p.id;
-                opt.textContent = `${p.icon || ''} ${p.title}`;
+                opt.textContent = p.title;
                 if (p.id === activeProjectId) opt.selected = true;
                 selector.appendChild(opt);
             });
@@ -1037,7 +1072,13 @@ ${js}
             if (!app) return;
 
             document.getElementById('runner-app-title').innerText = app.title;
-            document.getElementById('runner-app-icon').innerText = app.icon || '🚀';
+            
+            const runnerIconEl = document.getElementById('runner-app-icon');
+            if (app.icon && app.icon.startsWith('data:image')) {
+                runnerIconEl.innerHTML = `<img src="${app.icon}" class="w-6 h-6 object-cover rounded-md">`;
+            } else {
+                runnerIconEl.innerHTML = app.icon || '🚀';
+            }
 
             const iframe = document.getElementById('runner-iframe');
             iframe.srcdoc = generateAppDocument(app);
@@ -1056,11 +1097,39 @@ ${js}
                 unhideBtn.classList.add('hidden');
             } else {
                 header.classList.add('hidden');
+                unhideBtn.classList.add('hidden'); // Fixed typo
                 unhideBtn.classList.remove('hidden');
             }
         }
 
-        // เปิด Modal สดสำหรับสร้างใหม่
+        // ฟังก์ชันจัดการตัวเลือกไอคอนใน Modal
+        function updateIconPreview(val) {
+            const box = document.getElementById('icon-preview-box');
+            if (val.startsWith('data:image')) {
+                box.innerHTML = `<img src="${val}" class="w-full h-full object-cover">`;
+            } else {
+                box.innerHTML = val || '⚡';
+            }
+        }
+
+        function selectPresetIcon(emoji) {
+            document.getElementById('form-app-icon').value = emoji;
+            updateIconPreview(emoji);
+        }
+
+        function handleAppIconImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Str = e.target.result;
+                document.getElementById('form-app-icon').value = base64Str;
+                updateIconPreview(base64Str);
+            };
+            reader.readAsDataURL(file);
+        }
+
         function openCreateModal() {
             document.getElementById('modal-title').innerHTML = `<i class="fa-solid fa-cube text-indigo-400"></i> Create New Web App`;
             document.getElementById('form-app-id').value = '';
@@ -1068,11 +1137,11 @@ ${js}
             document.getElementById('form-app-icon').value = '⚡';
             document.getElementById('form-app-tag').value = 'utility';
             document.getElementById('form-app-desc').value = '';
+            updateIconPreview('⚡');
             
             document.getElementById('modal-app-details').classList.remove('hidden');
         }
 
-        // ฟังก์ชันใหม่: เปิด Modal ดึงข้อมูลโปรเจกต์เดิมมาแก้ไข
         function openEditModal(id) {
             const app = projects.find(p => p.id === id);
             if (!app) return;
@@ -1083,6 +1152,7 @@ ${js}
             document.getElementById('form-app-icon').value = app.icon || '⚡';
             document.getElementById('form-app-tag').value = app.tag || 'utility';
             document.getElementById('form-app-desc').value = app.description || '';
+            updateIconPreview(app.icon || '⚡');
 
             document.getElementById('modal-app-details').classList.remove('hidden');
         }
@@ -1091,18 +1161,16 @@ ${js}
             document.getElementById(id).classList.add('hidden');
         }
 
-        // บันทึกข้อมูล (รองรับทั้งสร้างใหม่ และแก้ไขโปรเจกต์เดิม)
         function handleAppFormSubmit(e) {
             e.preventDefault();
             const id = document.getElementById('form-app-id').value || 'app-' + Date.now();
             const title = document.getElementById('form-app-title').value;
-            const icon = document.getElementById('form-app-icon').value;
+            const icon = document.getElementById('form-app-icon').value || '⚡';
             const tag = document.getElementById('form-app-tag').value;
             const desc = document.getElementById('form-app-desc').value;
 
             const existingIndex = projects.findIndex(p => p.id === id);
             if (existingIndex >= 0) {
-                // อัปเดตโปรเจกต์เดิม
                 projects[existingIndex].title = title;
                 projects[existingIndex].icon = icon;
                 projects[existingIndex].tag = tag;
@@ -1110,7 +1178,6 @@ ${js}
                 projects[existingIndex].updatedDate = new Date().toISOString();
                 showToast("App details updated successfully!");
             } else {
-                // สร้างโปรเจกต์ใหม่
                 const newApp = {
                     id: id,
                     title: title,
